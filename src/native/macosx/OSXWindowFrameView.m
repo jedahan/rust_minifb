@@ -26,7 +26,12 @@
 {
     CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
 
-    CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
+    CGColorSpaceRef space = CGDisplayCopyColorSpace(CGMainDisplayID());
+
+    if (!space) {
+        space = CGColorSpaceCreateDeviceRGB();
+    }
+
     CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, draw_buffer, width * height * 4, NULL);
 
     CGImageRef img = CGImageCreate(width, height, 8, 32, width * 4, space, kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Little,
@@ -136,4 +141,3 @@
 }
 
 @end
-
